@@ -1,0 +1,25 @@
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\ExcelChange.exe.config
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\ExcelChange.exe
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\ExcelChange.pdb
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\ICSharpCode.SharpZipLib.dll
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\NPOI.dll
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\NPOI.OOXML.dll
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\NPOI.OpenXml4Net.dll
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\NPOI.OpenXmlFormats.dll
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\bin\Debug\ICSharpCode.SharpZipLib.xml
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\obj\Debug\ExcelChange.csprojResolveAssemblyReference.cache
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\obj\Debug\ExcelChange.exe
+c:\users\claychen\documents\visual studio 2015\Projects\ExcelChange\ExcelChange\obj\Debug\ExcelChange.pdb
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\ExcelChange.exe.config
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\ExcelChange.exe
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\ExcelChange.pdb
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\NPOI.dll
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\NPOI.OOXML.dll
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\NPOI.OpenXml4Net.dll
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\NPOI.OpenXmlFormats.dll
+C:\Users\User\Desktop\ExcelChange\ExcelChange\bin\Debug\ICSharpCode.SharpZipLib.xml
+C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.csprojResolveAssemblyReference.cache
+C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.exe
+C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.pdb
