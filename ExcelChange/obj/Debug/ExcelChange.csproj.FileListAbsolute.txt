@@ -23,3 +23,15 @@ C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.csprojResolv
 C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.exe
 C:\Users\User\Desktop\ExcelChange\ExcelChange\obj\Debug\ExcelChange.pdb
+D:\My_Git\ExcelChange\bin\Debug\ExcelChange.exe.config
+D:\My_Git\ExcelChange\obj\Debug\ExcelChange.exe
+D:\My_Git\ExcelChange\obj\Debug\ExcelChange.pdb
+D:\My_Git\ExcelChange\bin\Debug\ExcelChange.exe
+D:\My_Git\ExcelChange\bin\Debug\ExcelChange.pdb
+D:\My_Git\ExcelChange\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\My_Git\ExcelChange\bin\Debug\NPOI.dll
+D:\My_Git\ExcelChange\bin\Debug\NPOI.OOXML.dll
+D:\My_Git\ExcelChange\bin\Debug\NPOI.OpenXml4Net.dll
+D:\My_Git\ExcelChange\bin\Debug\NPOI.OpenXmlFormats.dll
+D:\My_Git\ExcelChange\bin\Debug\ICSharpCode.SharpZipLib.xml
+D:\My_Git\ExcelChange\obj\Debug\ExcelChange.csprojResolveAssemblyReference.cache

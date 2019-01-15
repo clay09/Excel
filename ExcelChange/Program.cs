@@ -20,7 +20,6 @@ namespace ExcelChange
         static void Main(string[] args)
         {
             var path = @"C:\Users\User\Desktop\Grace\HNG-F19-1220 ~原始單.xls";
-            //var path = @"C:\Users\ClayChen\Desktop\測試123.xlsx";
             GetBuyerName(path);
             var data = GetExcel(path);
             ReadFromExcelFile(data);
