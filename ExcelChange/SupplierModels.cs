@@ -34,18 +34,31 @@ namespace ExcelChange
         /// <summary> HNG 供應商 </summary>
         public class HNGModel
         {
+            public string Area { get; set; }
             public string Supplier { get; set; }
-            public string PDM { get; set; }
-            public string Description { get; set; }
-            public string Unit { get; set; }
-            public string Color { get; set; }
+            public string PDM_SerialNO { get; set; }
+            public string PDM_NO { get; set; }
             public string Style { get; set; }
-            public string DIM { get; set; }
+            public string Description { get; set; }
+            public string YKK_clr_code { get; set; }
+            public string NIKE_clr_code { get; set; }
+            public string Color_Description { get; set; }
             public string Size { get; set; }
-            public string Zipper { get; set; }
-            public string Quantity { get; set; }
-            public string Unitprice { get; set; }
+            public string Length { get; set; }
+            public string Length_Unit { get; set; }
+            public string Ins { get; set; }
+            public string Gender { get; set; }
+            public string Qty { get; set; }
+            public string Unit { get; set; }
+            public string QRS_PP_Qty { get; set; }
+            public string CC_Qty { get; set; }
+            public string Sample_Qty { get; set; }
+            public string U_Price { get; set; }
+            public string Sp_UnitPrice { get; set; }
             public string Amount { get; set; }
+            public string YKKItemCode { get; set; }
+            public string NIKE_NO { get; set; }
+            public string NIKE_Meterial { get; set; }
         }
     }
 }
