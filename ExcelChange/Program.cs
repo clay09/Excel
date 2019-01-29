@@ -6,20 +6,18 @@ using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using static ExcelChange.SupplierModels;
 
 namespace ExcelChange
 {
     class Program
     {
-        
-
-
         static void Main(string[] args)
         {
             var path = @"C:\Users\ClayChen\Desktop\Grace\HNG-F19-1220 ~原始單.xls";
             GetBuyerName(path);
-            var excel = GetExcel(path);
+            var excel = Helper.GetExcel(path);
             var data = ReadFromExcelFile(excel);
 
             WriteToExcel(@"C:\Users\ClayChen\Desktop\NewExcel\HNG-F19.xls", data);
@@ -35,9 +33,9 @@ namespace ExcelChange
             try
             {
                 var sheetCount = data.NumberOfSheets; // 取的所有頁籤數量
-                for (int g = 0; g < 1/*sheetCount*/; g++)
+                for (int i = 10; i < 11/*sheetCount*/; i++)
                 {
-                    ISheet sheet = data.GetSheetAt(g); //讀取當前頁籤(表)數據
+                    ISheet sheet = data.GetSheetAt(i); //讀取當前頁籤(表)數據
 
                     result = GetSingleSheetData(sheet);
                 }
@@ -65,14 +63,13 @@ namespace ExcelChange
             for (int i = 25; i <= data.LastRowNum; i++) // 處理橫的(行)
             {
                 if (isFinish)
-                {
                     break;
-                }
-
+                
                 row = data.GetRow(i);  //讀取當前行數據，LastRowNum 是當前表的總行數-1（注意）
 
                 if (row != null)
                 {
+                    #region 取得資料
                     for (int j = 0; j < row.LastCellNum; j++) //處理(欄位)，LastCellNum 是當前行的總列數 
                     {
 
@@ -100,6 +97,7 @@ namespace ExcelChange
                             rowText += value + "\r";
                         }
                     }
+                    #endregion
 
                     // 條件成立就將收集的資料加入集合中
                     if (start)
@@ -112,58 +110,78 @@ namespace ExcelChange
 
            return DataTransfer(rowStringValue);
         }
-
-
+        
         public static List<HNGModel> DataTransfer(List<string> data)
         {
             List<HNGModel> supplierData = new List<HNGModel>();
             try
             {
-                string temp = null;
+                string temp = null; string color = null; string gender = null;
                 for (int i = 1; i < data.Count; i++)
                 {
-                    
                     var itemArray = data[i].Split('\r');
+                    color = Color(itemArray[4]);
+                    if (gender == null)
+                    {
+                        gender = Gender(itemArray[4]);
+                    }
+
                     var HNG = new HNGModel();
                     HNG.Area = "1";
                     HNG.Supplier = itemArray[0];
-                    HNG.PDM_SerialNO = "1";
+                    HNG.PDM_SerialNO = null;
                     HNG.PDM_NO = itemArray[1];
                     HNG.Style = itemArray[5];
-                    HNG.Description = "";
-                    HNG.YKK_clr_code = "";
-                    HNG.NIKE_clr_code = "";
-                    if (itemArray[4] == "沒資料" && temp == null)
+                    #region MyRegion
+                    //if (itemArray[4] == "沒資料" && temp == null)
+                    //{
+                    //    temp = data[i - 1].Split('\r')[4];
+                    //    HNG.Color_Description = temp;
+                    //}
+                    //else if (itemArray[4] == "沒資料" && temp != null)
+                    //{
+                    //    HNG.Color_Description = temp;
+                    //}
+                    //else
+                    //{
+                    //    HNG.Color_Description = itemArray[4];
+                    //    temp = null;
+                    //}
+                    #endregion
+                    if (color == "沒資料" && temp == null)
                     {
-                        temp = data[i - 1].Split('\r')[4];
+                        temp = Color(data[i - 1].Split('\r')[4]);
                         HNG.Color_Description = temp;
                     }
-                    else if (itemArray[4] == "沒資料" && temp != null)
+                    else if (color == "沒資料" && temp != null)
                     {
                         HNG.Color_Description = temp;
                     }
                     else
                     {
-                        HNG.Color_Description = itemArray[4];
+                        HNG.Color_Description = color;
                         temp = null;
                     }
-                    HNG.Size = itemArray[7];
-                    HNG.Length = "";
-                    HNG.Length_Unit = "";
-                    HNG.Ins = "";
-                    HNG.Gender = "MAN";
-                    HNG.Qty = itemArray[9];
+                    HNG.Size = itemArray[7] == "沒資料" ? string.Empty : itemArray[7];
+                  
+                    HNG.Qty = itemArray[9] == "沒資料" ? string.Empty : itemArray[9];
                     HNG.Unit = itemArray[3];
-                    HNG.QRS_PP_Qty = "";
-                    HNG.CC_Qty = "";
-                    HNG.Sample_Qty = "";
-                    HNG.U_Price = "";
-                    HNG.Sp_UnitPrice = "";
-                    HNG.Amount = "";
-                    HNG.YKKItemCode = "";
-                    HNG.NIKE_NO = "";
-                    HNG.NIKE_Meterial = "";
+                   
                     supplierData.Add(HNG);
+                }
+
+                var groupbyData = supplierData.GroupBy(a => new { a.Supplier, a.PDM_NO });
+
+                int no = 1;
+                foreach (var item in groupbyData)
+                {
+                    foreach (var groupItem in item)
+                    {
+                        groupItem.PDM_SerialNO = no.ToString();
+                        groupItem.Gender = gender == null ? string.Empty : gender;
+                        no++;
+                    }
+                    no = 1;
                 }
             }
             catch (Exception ex)
@@ -171,30 +189,44 @@ namespace ExcelChange
                 throw;
             }
 
-            return supplierData;
+            return supplierData.OrderBy(a => a.Supplier).ToList(); 
         }
 
+        public static string Do(List<string> allData, string[] data, int index)
+        {
+            string result;
+            string temp = null;
+            if (data[index] == "沒資料" && temp == null)
+            {
+                temp = allData[index - 1].Split('\r')[index];
+                result = temp;
+            }
+            else if (data[index] == "沒資料" && temp != null)
+            {
+                result = temp;
+            }
+            else
+            {
+                result = data[index];
+                temp = null;
+            }
+
+            return result;
+        }
 
         public static void WriteToExcel(string filePath, List<HNGModel> data)
         {
             //取得excel 
-            IWorkbook wb = GetExcel(filePath);
+            IWorkbook wb = Helper.GetExcel(filePath);
             
             //創建一個表單
-            ISheet sheet = wb.CreateSheet("Sheet7");
-            //設置列寬
-            int[] columnWidth = { 10, 10, 10, 10, 10, 20, 10, 10, 10, 10, 10, 10, 20, 10, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-            for (int i = 0; i < columnWidth.Length; i++)
-            {
-                //設置列寬度，256*字符數，因為單位是1/256個字符
-                sheet.SetColumnWidth(i, 256 * columnWidth[i]);
-            }
-            
+            ISheet sheet = wb.CreateSheet("Sheet1");
+           
             // 表頭
-            Header(sheet);
+            Helper.Header(sheet, 0, new HNGModel());
 
             // 報表內容
-            Body(data, sheet);
+            Helper.Body(data, sheet, new HNGModel());
 
             try
             {
@@ -207,70 +239,7 @@ namespace ExcelChange
 
             }
         }
-
-        public static void Body(List<HNGModel> data, ISheet sheet)
-        {
-            Type modelType = new HNGModel().GetType();
-           
-            int count = 1;
-            
-            foreach (var item in data)
-            {
-                var jh = modelType.GetProperties().Length;
-                for (int i = 0; i < modelType.GetProperties().Length; i++)
-                {
-                    var propValue = modelType.GetProperties()[i].GetValue(item, null)?.ToString();
-                    sheet.CreateRow(count).CreateCell(i).SetCellValue(propValue);
-                }
-                count++;
-            }
-
-        }
-
-        public static void Header(ISheet sheet)
-        {
-            IRow row;
-            ICell cell;
-            Type myType = typeof(HNGModel);
-            int j = 0;
-
-            // 表頭
-            for (int i = 0; i < 1; i++)
-            {
-                row = sheet.CreateRow(i);//創建第i行
-                foreach (var item in myType.GetProperties())
-                {
-                    cell = row.CreateCell(j);//創建第j列
-                    cell.SetCellValue(item.Name);
-                    j++;
-                }
-            }
-        }
-
-        /// <summary> 讀取excel文檔 </summary>
-        /// <param name="filePath">檔案路徑</param>
-        /// <returns></returns>
-        public static IWorkbook GetExcel(string filePath)
-        {
-            IWorkbook result = null;
-            string extension = System.IO.Path.GetExtension(filePath);
-
-            FileStream fs = File.OpenRead(filePath);
-
-            if (extension.Equals(".xls")) // 2003版本
-            {
-                result = new HSSFWorkbook(fs); //把xls文檔中的數據寫入wk中
-            }
-            else // 2007版本
-            {
-                result = new XSSFWorkbook(fs); //把xlsx文檔中的數據寫入wk中
-            }
-
-            fs.Close();
-
-            return result;
-        }
-
+        
         /// <summary> 從檔名取得 廠商名稱、記節、日期 </summary>
         /// <param name="path">檔案路徑</param>
         public static BuyerInfoModel GetBuyerName(string path)
@@ -289,58 +258,37 @@ namespace ExcelChange
         }
 
         /// <summary>
-        /// 根據指定的文檔格式創建對應的類
+        /// 取得顏色
         /// </summary>
-        /// <param name="extension">文檔路徑</param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public static IWorkbook ExcelType(string extension)
+        public static string Color(string data)
         {
-            //創建工作薄  
-            IWorkbook wb;
+            // 檢查有沒有gender的資料在裡面，有的話移除掉gender的資料
+            string result = data?.ToLower().IndexOf("gender") > -1 ?
+                               data.Substring(0, data.ToLower().IndexOf("gender") - 1) :
+                               data;
 
-            //根據指定的文檔格式創建對應的類
-            if (extension.Equals(".xls"))
-            {
-                wb = new HSSFWorkbook();
-            }
-            else
-            {
-                wb = new XSSFWorkbook();
-            }
-
-            return wb;
+            return result;
         }
 
-
-        public void g()
+        /// <summary>
+        /// 取得性別
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static string Gender(string data)
         {
-            //ICellStyle style1 = wb.CreateCellStyle();//樣式
-            //style1.Alignment = HorizontalAlignment.Left;//文本水平對齊方式
-            //style1.VerticalAlignment = VerticalAlignment.Center;//文本垂直對齊方式
-            //                                                    //設置邊框
-            //style1.BorderBottom = BorderStyle.Thin;
-            //style1.BorderLeft = BorderStyle.Thin;
-            //style1.BorderRight = BorderStyle.Thin;
-            //style1.BorderTop = BorderStyle.Thin;
-            //style1.WrapText = true;//自動換行
-            //ICellStyle style2 = wb.CreateCellStyle();//樣式
-            //IFont font1 = wb.CreateFont();//字體
-            //font1.FontName = "楷體";
-            //font1.Color = HSSFColor.Red.Index;//字體顏色
-            //font1.Boldweight = (short)FontBoldWeight.Normal;//字體加粗樣式
-            //style2.SetFont(font1);//樣式裏的字體設置具體的字體樣式
-            //                      //設置背景色
-            //style2.FillForegroundColor = HSSFColor.Yellow.Index;
-            //style2.FillPattern = FillPattern.SolidForeground;
-            //style2.FillBackgroundColor = HSSFColor.Yellow.Index;
-            //style2.Alignment = HorizontalAlignment.Left;//文本水平對齊方式
-            //style2.VerticalAlignment = VerticalAlignment.Center;//文本垂直對齊方式
-            //ICellStyle dateStyle = wb.CreateCellStyle();//樣式
-            //dateStyle.Alignment = HorizontalAlignment.Left;//文本水平對齊方式
-            //dateStyle.VerticalAlignment = VerticalAlignment.Center;//文本垂直對齊方式
-            //                                                       //設置數據顯示格式
-            //IDataFormat dataFormatCustom = wb.CreateDataFormat();
-            //dateStyle.DataFormat = dataFormatCustom.GetFormat("yyyy-MM-dd HH:mm:ss");
+            string result = null;
+            if (data?.ToLower().IndexOf("gender") > -1)
+            {
+                result = data
+                    .Substring(data.ToLower().IndexOf("gender"))
+                    .ToLower().Contains("w") ?
+                    "Women" : "Men";
+            }
+
+            return result;
         }
     }
 }
